@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f5f0">
+<title>Classes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300;400&family=Commissioner:wght@300;400;500&family=DM+Mono:wght@400&display=swap">
+<style>
+:root{
+  --paper:#f7f5f0; --ink:#1a1a1a; --ink-2:#555c66; --ink-3:#7a808a; --rule:#dedbd3; --accent:#1f5fa8; --wine:#7a1f2b;
+  --f-name:"Noto Serif Display","Noto Serif",Georgia,serif;
+  --f-text:"Commissioner",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--wine:#d58a93;--paper:#0c1320;--ink:#ece6da;--ink-2:#a3abb8;--ink-3:#6f7989;--rule:#223047;--accent:#72a6e6;color-scheme:dark}
+}
+:root[data-theme="dark"]{--wine:#d58a93;--paper:#0c1320;--ink:#ece6da;--ink-2:#a3abb8;--ink-3:#6f7989;--rule:#223047;--accent:#72a6e6;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--f-text); font-size:16px; line-height:1.5;
+  padding:env(safe-area-inset-top,0) 20px env(safe-area-inset-bottom,0);
+  -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
+}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+main{max-width:520px;margin-inline:auto;padding-block:7vh 14vh}
+
+.eyebrow{font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+h1{margin:.4rem 0 0;font-family:var(--f-name);font-weight:300;font-size:clamp(2.4rem,10vw,3.4rem);line-height:1}
+.sum{margin-top:.6rem;font-family:var(--f-mono);font-size:.82rem;color:var(--ink-3)}
+.sum b{font-weight:400;color:var(--ink-2)}
+.sum .due{color:var(--accent)}
+
+.list{margin-top:1.6rem}
+.st{}
+.head{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:.8rem;padding-block:.35rem}
+.who{text-align:left;min-width:0}
+.name{display:block;font-family:var(--f-name);font-size:1.3rem;line-height:1.2;color:var(--wine);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meta{display:block;margin-top:.05rem;font-size:.72rem;color:var(--ink-3)}
+.meta .due{color:var(--accent)}
+.who:focus-visible{outline:1px solid var(--accent);outline-offset:6px;border-radius:2px}
+.n{font-family:var(--f-mono);font-size:1.15rem;min-width:2ch;text-align:right;font-variant-numeric:tabular-nums;transition:color .4s}
+.n.zero{color:var(--ink-3)}
+.n.bump{color:var(--accent);transition:none}
+.pm{display:flex;gap:.4rem}
+.pm button{width:34px;height:34px;border:1px solid var(--rule);border-radius:50%;font-family:var(--f-mono);font-size:1rem;line-height:1;color:var(--ink-2);display:grid;place-items:center;transition:border-color .2s,color .2s}
+.pm button:active{border-color:var(--accent);color:var(--accent)}
+.pm button:disabled{opacity:.35;cursor:default}
+
+.panel{padding:.1rem 0 .9rem}
+.panel[hidden]{display:none}
+.hist{max-height:min(40vh,240px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:2px;
+  -webkit-mask-image:linear-gradient(#000 85%,transparent);mask-image:linear-gradient(#000 85%,transparent)}
+.hist.short{-webkit-mask-image:none;mask-image:none}
+.hist::-webkit-scrollbar{width:3px}.hist::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px}
+.hist .cl:last-child{margin-bottom:1.2rem}
+.hist.short .cl:last-child{margin-bottom:0}
+.cl{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.35rem 0 .35rem .1rem;border-top:1px dashed var(--rule)}
+.cl:first-child{border-top:0}
+.date{position:relative;font-family:var(--f-mono);font-size:.82rem;color:var(--ink-2)}
+.date input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer;font-size:16px}
+.date .yr{color:var(--ink-3)}
+.cl .date,.cl .tag{transition:opacity .3s}
+.cl.paid .date{opacity:.35}
+.cl.paid .tag{opacity:.55}
+.tag{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:.25em .75em;border-radius:999px;border:1px solid var(--rule);color:var(--ink-3)}
+.tag.no{border-color:var(--accent);color:var(--accent)}
+.empty{font-size:.88rem;color:var(--ink-3);padding:.4rem 0}
+.tools{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem;margin-top:.7rem;font-size:.76rem;color:var(--ink-3)}
+.link{color:var(--accent);font-size:.78rem}
+.link.mute{color:var(--ink-3)}
+.tools .sp{flex:1}
+
+.add{margin-top:1.1rem}
+.foot{margin-top:2.6rem;display:flex;gap:1rem;align-items:baseline;flex-wrap:wrap;font-size:.78rem;color:var(--ink-3)}
+.sync{display:flex;gap:.5rem;margin-top:.8rem;width:100%}
+.sync input{flex:1;min-width:0;font:inherit;font-size:16px;padding:.5em .7em;border:1px solid var(--rule);border-radius:6px;background:transparent;color:var(--ink)}
+.sync[hidden]{display:none}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow" id="month"></div>
+  <h1>Classes</h1>
+  <div class="sum" id="sum"></div>
+  <div class="list" id="list"></div>
+  <div class="add"><button class="link" id="addStudent">+ Add student</button></div>
+  <div class="foot">
+    <span id="status">Saved on this device</span>
+    <button class="link mute" id="syncBtn">Google Sheet</button>
+    <div class="sync" id="syncBox" hidden>
+      <input id="syncUrl" placeholder="Apps Script web app URL" autocomplete="off">
+      <button class="link" id="syncSave">Save</button>
+    </div>
+  </div>
+</main>
+
+<script>
+const KEY = 'clases.v1', URL_KEY = 'clases.sheetUrl';
+const $ = s => document.querySelector(s);
+const uid = () => Math.random().toString(36).slice(2, 9);
+const today = () => new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD, local time
+const ls = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+};
+
+const starter = () => ({ updated: 0, students: [] });
+
+let S;
+try { S = JSON.parse(ls.get(KEY)) || starter(); } catch(e){ S = starter(); }
+const open = new Set();
+let bumped = null;
+
+function commit(){
+  S.updated = Date.now();
+  ls.set(KEY, JSON.stringify(S));
+  render();
+  push();
+}
+
+/* ---------- actions ---------- */
+function addClass(s){
+  const c = { id: uid(), date: today(), paid: false };
+  if (s.credit > 0){ c.paid = true; c.pre = true; s.credit--; }
+  s.classes.push(c);
+  bumped = s.id;
+  commit();
+}
+function removeLast(s){
+  const c = s.classes.pop();
+  if (!c) return;
+  if (c.pre) s.credit++;
+  commit();
+}
+function receivePayment(s){ // pays the oldest unpaid class, otherwise adds one prepaid class
+  const due = s.classes.filter(c => !c.paid).sort((a,b) => a.date.localeCompare(b.date))[0];
+  if (due) due.paid = true; else s.credit++;
+  commit();
+}
+function undoCredit(s){ if (s.credit > 0){ s.credit--; commit(); } }
+function togglePaid(c){ c.paid = !c.paid; delete c.pre; commit(); }
+function setDate(c, v){ if (v){ c.date = v; commit(); } }
+function addStudent(){
+  const name = (prompt('Student name') || '').trim();
+  if (!name) return;
+  S.students.push({ id: uid(), name, credit: 0, classes: [] });
+  commit();
+}
+function removeStudent(s){
+  if (!confirm(`Remove ${s.name} and all their classes?`)) return;
+  S.students = S.students.filter(x => x !== s);
+  commit();
+}
+
+/* ---------- render ---------- */
+function fmt(d){
+  const dt = new Date(d + 'T12:00');
+  const t = dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+  return dt.getFullYear() === new Date().getFullYear() ? t : `${t} <span class="yr">${dt.getFullYear()}</span>`;
+}
+function el(html){ const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstChild; }
+const esc = s => s.replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+
+function render(){
+  $('#month').textContent = new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+  let total = 0, due = 0;
+  const list = $('#list'); list.innerHTML = '';
+
+  S.students.forEach(s => {
+    const n = s.classes.length, unpaid = s.classes.filter(c => !c.paid).length;
+    total += n; due += unpaid;
+    const meta = [n ? `${n} class${n === 1 ? '' : 'es'}` : 'no classes yet'];
+    if (s.credit) meta.push(`${s.credit} prepaid`);
+
+    const row = el(`<div class="st">
+      <div class="head">
+        <button class="who" aria-expanded="${open.has(s.id)}">
+          <span class="name">${esc(s.name)}</span>
+          <span class="meta">${meta.join(' · ')}</span>
+        </button>
+        <span class="n${unpaid ? '' : ' zero'}${bumped === s.id ? ' bump' : ''}" title="Unpaid classes">${unpaid}</span>
+        <div class="pm">
+          <button aria-label="Remove last class" ${n ? '' : 'disabled'}>−</button>
+          <button aria-label="Add class today">+</button>
+        </div>
+      </div>
+      <div class="panel" ${open.has(s.id) ? '' : 'hidden'}></div>
+    </div>`);
+
+    const [who] = row.querySelectorAll('.who');
+    const [minus, plus] = row.querySelectorAll('.pm button');
+    who.onclick = () => { open.has(s.id) ? open.delete(s.id) : open.add(s.id); render(); };
+    minus.onclick = () => removeLast(s);
+    plus.onclick = () => addClass(s);
+
+    if (open.has(s.id)){
+      const panel = row.querySelector('.panel');
+      const sorted = [...s.classes].sort((a,b) => b.date.localeCompare(a.date));
+      if (!sorted.length) panel.append(el(`<div class="empty">Tap + after a class to log it.</div>`));
+      const hist = el(`<div class="hist${sorted.length > 6 ? '' : ' short'}"></div>`);
+      if (sorted.length) panel.append(hist);
+      sorted.forEach(c => {
+        const line = el(`<div class="cl${c.paid ? ' paid' : ''}">
+          <label class="date">${fmt(c.date)}<input type="date" value="${c.date}" aria-label="Change date"></label>
+          <button class="tag ${c.paid ? '' : 'no'}">${c.paid ? (c.pre ? 'prepaid' : 'paid') : 'unpaid'}</button>
+        </div>`);
+        line.querySelector('input').onchange = e => setDate(c, e.target.value);
+        line.querySelector('.tag').onclick = () => togglePaid(c);
+        hist.append(line);
+      });
+      const tools = el(`<div class="tools">
+        <button class="link">+ Payment received</button>
+        ${s.credit ? `<span>${s.credit} prepaid <button class="link mute" data-u>undo</button></span>` : ''}
+        <span class="sp"></span>
+        <button class="link mute" data-r>Remove student</button>
+      </div>`);
+      tools.querySelector('.link').onclick = () => receivePayment(s);
+      const u = tools.querySelector('[data-u]'); if (u) u.onclick = () => undoCredit(s);
+      tools.querySelector('[data-r]').onclick = () => removeStudent(s);
+      panel.append(tools);
+    }
+    list.append(row);
+  });
+
+  $('#sum').innerHTML = (due ? `<span class="due">${due} unpaid</span>` : 'All paid') + ` · ${total} classes`;
+  if (bumped){ requestAnimationFrame(() => requestAnimationFrame(() => { document.querySelectorAll('.n.bump').forEach(x => x.classList.remove('bump')); })); bumped = null; }
+}
+
+/* ---------- optional Google Sheet sync ---------- */
+let sheetUrl = ls.get(URL_KEY) || '', timer;
+const status = t => $('#status').textContent = t;
+const hhmm = () => new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+async function pull(){
+  if (!sheetUrl) return;
+  status('Syncing…');
+  try {
+    const remote = await (await fetch(sheetUrl)).json();
+    if (remote && remote.students && remote.updated > S.updated){
+      S = remote; ls.set(KEY, JSON.stringify(S)); render();
+    } else if (S.updated > (remote.updated || 0)) { return push(true); }
+    status('Synced ' + hhmm());
+  } catch(e){ status('Offline · saved on this device'); }
+}
+function push(now){
+  if (!sheetUrl) return;
+  clearTimeout(timer);
+  status('Saving…');
+  timer = setTimeout(async () => {
+    try {
+      await fetch(sheetUrl, { method: 'POST', body: JSON.stringify(S) }); // text/plain: no CORS preflight
+      status('Synced ' + hhmm());
+    } catch(e){ status('Offline · saved on this device'); }
+  }, now ? 0 : 900);
+}
+
+$('#addStudent').onclick = addStudent;
+$('#syncBtn').onclick = () => { const b = $('#syncBox'); b.hidden = !b.hidden; $('#syncUrl').value = sheetUrl; };
+$('#syncSave').onclick = () => {
+  sheetUrl = $('#syncUrl').value.trim();
+  ls.set(URL_KEY, sheetUrl);
+  $('#syncBox').hidden = true;
+  sheetUrl ? pull() : status('Saved on this device');
+};
+document.addEventListener('visibilitychange', () => { if (!document.hidden) pull(); });
+
+render();
+pull();
+</script>
+</body>
+</html>
