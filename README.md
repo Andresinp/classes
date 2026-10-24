@@ -12,9 +12,8 @@ Live: https://andresinp.github.io/classes/
 1. Open the sheet → **Extensions → Apps Script**, replace the editor contents with `Code.gs`, Save.
 2. **Deploy → New deployment → Web app** · Execute as: **Me** · Who has access: **Anyone**. Authorize.
 3. Copy the web app URL (ends in `/exec`).
-4. In the app, tap **Google Sheet** at the bottom, paste the URL, **Save**. Do this once on each device.
-   Or open `https://andresinp.github.io/classes/#sheet=<web app URL>` once on the device — the app
-   saves the URL and removes it from the address bar.
+4. Put the URL in `SHEET_URL` in `index.html` and push. Every device then uses it with no setup.
+   (Tapping **Google Sheet** in the app overrides it on that one device.)
 
 The sheet keeps the full data in a hidden `_data` tab and rewrites two readable tabs on every save:
 `Classes` (one row per class) and `Summary` (one row per student). Edit in the app, not the sheet.
@@ -22,4 +21,5 @@ The sheet keeps the full data in a hidden `_data` tab and rewrites two readable 
 If you change `Code.gs`, redeploy with **Deploy → Manage deployments → Edit → New version** so the
 URL stays the same.
 
-Note: anyone who has the `/exec` URL can read and overwrite the data, so don't post it anywhere.
+Note: the `/exec` URL is in this public repo, so anyone who finds it can read and overwrite the
+data. If something goes wrong, restore from the sheet's **File → Version history**.

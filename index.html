@@ -234,9 +234,8 @@ function render(){
 }
 
 /* ---------- optional Google Sheet sync ---------- */
-let sheetUrl = ls.get(URL_KEY) || '', timer;
-const linked = new URLSearchParams(location.hash.slice(1)).get('sheet'); // one-time setup link: …/#sheet=<web app URL>
-if (linked){ sheetUrl = linked; ls.set(URL_KEY, sheetUrl); history.replaceState(null, '', location.pathname); }
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbz8iHMY8621eZ0uxV6-4lFkxXnOb83BrswV1bS28MmvO_5lyjhuALY6SEigORPhHrGRQQ/exec';
+let sheetUrl = ls.get(URL_KEY) || SHEET_URL, timer;
 const status = t => $('#status').textContent = t;
 const hhmm = () => new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
